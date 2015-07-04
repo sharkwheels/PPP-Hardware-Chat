@@ -1,16 +1,22 @@
+"use strict";
+
+/* | Dependencies
+---|---------------------------------*/
 
 var net = require('net');
 var HOST = '127.0.0.1';
 var PORT =  '3000';
 var clients = [];
 
-// Start a TCP Server
+/* | START THE TCP SERVER
+---|---------------------------------*/
+
 net.createServer(function (socket) {
 
   // Identify this client
   socket.name = socket.remoteAddress + ":" + socket.remotePort 
 
-  // Put this new client in the list
+  // Put this new client in the list /////////////////////////////////////////////
   clients.push(socket);
   //console.log(clients);
 
@@ -20,32 +26,35 @@ net.createServer(function (socket) {
 
 
   // Handle incoming messages from clients.
+  // this is currently commented out so that its not a noisy shit show in the terminal window.
+
   socket.on('data', function (data) {
     //broadcast(socket.name +': '+ data + '\n');
     broadcast(data);
     //socket.pipe(data);
     //console.log(clients);
-
   });
 
-  // Remove the client from the list when it leaves
+  // Remove the client from the list when it leaves ///////////////////////////////
   socket.on('end', function () {
     clients.splice(clients.indexOf(socket), 1);
     broadcast(socket.name + ' disconnected.\n');
   });
   
-  // Send a message to all clients except the sender
+  // Send a message to all clients except the sender ///////////////////////////////
   function broadcast(message, sender) {
     clients.forEach(function (client) {
       // Don't want to send it to sender
       if (client === sender) return;
       client.write(message);
     });
-    // Log it to the server output too
+    // Log it to the server output too //////////////////////////////////////////////
     process.stdout.write(message)
   }
 
 }).listen(PORT);
 
-// Put a friendly message on the terminal of the server.
+/* | WELCOME MESSAGE
+---|---------------------------------*/
+
 console.log('Hardware Chat Client\n');
