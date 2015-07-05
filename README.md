@@ -1,23 +1,23 @@
-/* | PUNK PRISM POWER SERVER SCRIPTS
----|---------------------------------*/
+/* | PUNK PRISM POWER SERVER SCRIPTS <br />
+---|---------------------------------*/<br />
 
 repo for the hardware chat for the demo prototype Punk Prism Power. Connects 2 BLE beans using seperate terminal window processes to a chat client
 to talk to Unity. 
 
-/* | SETUP (Only for the chat app)
----|---------------------------------*/
+/* | SETUP (Only for the chat app) <br />
+---|---------------------------------*/<br />
 
 Follow the instructions on how to get the LightBlue Bean up and running: https://punchthrough.com/bean/getting-started-osx/
 
-Download and install node: https://nodejs.org/download/
-Download and install noble: https://www.npmjs.com/package/noble
-Download and install ble-bean: https://www.npmjs.com/package/ble-bean
+Download and install node: https://nodejs.org/download/<br />
+Download and install noble: https://www.npmjs.com/package/noble<br />
+Download and install ble-bean: https://www.npmjs.com/package/ble-bean<br />
 
 
-/* | RUNNING
----|---------------------------------*/
+/* | RUNNING<br />
+---|---------------------------------*/<br />
 
-Navigate to the folder where the scripts are kept...
+Navigate to the folder where the scripts are kept...<br />
 
 1) Run: node tcpserver.js  (this will start the chat server) in one terminal window <br />
 2) Launch two new terminal windows and run: findPlayerOne.js in one and findPlayerTwo.js in the other <br />
@@ -31,15 +31,15 @@ Navigate to the folder where the scripts are kept...
 Start Chattin' !
 
 
-/* | REFERENCES 
----|---------------------------------*/
+/* | REFERENCES <br />
+---|---------------------------------*/<br />
 
-https://github.com/jacobrosenthal/ble-bean
-http://www.hacksparrow.com/tcp-socket-programming-in-node-js.html
-https://gist.github.com/creationix/707146
+https://github.com/jacobrosenthal/ble-bean<br />
+http://www.hacksparrow.com/tcp-socket-programming-in-node-js.html<br />
+https://gist.github.com/creationix/707146<br />
 
 
-/* | CURRENT ISSUES
----|---------------------------------*/
+/* | CURRENT ISSUES<br />
+---|---------------------------------*/<br />
 
-Its messy because you have to run two processes. But hey, its a chat client. So for now, it will work. 
+Its messy because you have to run two processes. But hey, its a chat client. So for now, it will work. <br />
