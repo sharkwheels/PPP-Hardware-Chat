@@ -18,7 +18,7 @@ net.createServer(function (socket) {
 
   // Put this new client in the list /////////////////////////////////////////////
   clients.push(socket);
-  console.log(clients);
+  //console.log(clients);
 
   // Send a nice welcome message and announce
   socket.write('connected: ' + socket.name + '\n');
@@ -26,9 +26,13 @@ net.createServer(function (socket) {
 
 
   // Handle incoming messages from clients.
+  // this is currently commented out so that its not a noisy shit show in the terminal window.
 
   socket.on('data', function (data) {
+    //broadcast(socket.name +': '+ data + '\n');
     broadcast(data);
+    //socket.pipe(data);
+    //console.log(clients);
   });
 
   // Remove the client from the list when it leaves ///////////////////////////////
