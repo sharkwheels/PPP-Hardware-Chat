@@ -41,14 +41,13 @@ var client = new net.Socket();
 noble.on('stateChange', function(state) {
   if (state === 'poweredOn') {
   	// only find beans with a particular service UUID (services)
+  	console.log('BLE is on, am scanning');
     noble.startScanning([serviceUUID], false);
-    console.log('am started');
   } else {
     noble.stopScanning();
-    console.log('am stopped');
+    console.log('BLE has stopped, stop scanning');
   }
 });
-
 
 
 /* | DISCOVER BEANS
@@ -67,7 +66,6 @@ var discoverBeans = function(q) {
 	}else {
 		console.log("not a bean");
 	}
-	
 };
 
 
@@ -119,7 +117,7 @@ var setupServices = function(beanName, thisBean) {
 ---|---------------------------------*/
 
 var readFromBean = function(beanName, serialTransport) {
-	console.log("!readFromBean", beanName, serialTransport);
+	console.log("!readFromBean", beanName);
 
 	serialTransport.on('read', function(data, isNotification) {
 			
@@ -159,13 +157,13 @@ client.on('close', function() {
 	console.log('Connection closed');
 });	
 
-/* | NOBLE PROCESS
+
+
+/* | DISCOVER BEANS AND KEEP PROCESS RUNNING
 ---------------------|------------------------------------*/
 
-//noble.startScanning([serviceUUID], false); // why this had a bird, who knows
 noble.on('discover', discoverBeans);
 process.stdin.resume(); //so the program will not close instantly
-
 
 /* | EXIT HANDLER
 ---|---------------------------------*/
