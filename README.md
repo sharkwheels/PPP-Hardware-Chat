@@ -18,7 +18,7 @@ Download and install ble-bean: https://www.npmjs.com/package/ble-bean<br />
 Navigate to the folder where the scripts are kept...<br />
 
 1) Run: node tcpserver.js  (this will start the chat server) in one terminal window <br />
-2) Launch a new terminal windows and run: findPlayers.js (node findPlayers.js) <br />
+2) Launch a new terminal tab (apple + t) and run: findPlayers.js (node findPlayers.js) <br />
    --> You should now have 2 terminal windows running. 1 server and one client process <br />
    --> To test server, you can also telnet into your host and port <br />
 3) On the unity side: Make sure you have the socketScript.cs and TCPConnection.cs running <br />
