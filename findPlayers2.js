@@ -41,7 +41,7 @@ var client = new net.Socket();
 noble.on('stateChange', function(state){
 	if (state === 'poweredOn'){
 		//noble.startScanning();
-		noble.startScanning([serviceUUID], false);
+		
 		console.log("BLE enabled, scanning started");
 	} else {
 		noble.stopScanning();
