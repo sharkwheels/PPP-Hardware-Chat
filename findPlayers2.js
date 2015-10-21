@@ -23,7 +23,6 @@ var beanTransportChar = 'A495FF11C5B14B44B5121370F02D74DE'
 
 // var sceptreUUID = a78be07269c24e26b6242ea9a3e97535;
 // var chainsawUUID = c111d0df236440b0aff54d5b4ab7bfde;
-//var specificBeans = ["Sceptre", "Chainsaw", "Xmas", "Bean"];
 
 
 /* | CHAT SERVER CONNECTION VARIABLES
@@ -76,7 +75,7 @@ noble.on('discover', function(q) {
 			console.log("!connect", beanName);
 			setupServices(beanName, q);
 
-			// https://github.com/sandeepmistry/noble/issues/77  <-- trying once instead of on.
+			// https://github.com/sandeepmistry/noble/issues/77  <-- using once instead of on.
 
 			q.once('disconnect', function(){
 				console.log(q.advertisement.localName + " disconnected, trying to find it...");
@@ -109,7 +108,6 @@ var setupServices = function(beanName, thisBean) {
 					console.log("!service.discovered ", beanName + " serial services");
 					// send that to read and write
 					readFromBean(beanName, characteristics[0]); // name, serial transport
-                    //beanMap[beanName].characteristics = characteristics;
 				});
 			}
 
@@ -132,7 +130,6 @@ var readFromBean = function(beanName, serialTransport) {
 			var trimmed = value.trim();
 
 			// send it along to the server
-			//console.log(trimmed + "\n");
 			client.write(trimmed + "\n");
 		});
 
