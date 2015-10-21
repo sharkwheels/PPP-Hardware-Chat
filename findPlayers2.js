@@ -62,7 +62,7 @@ noble.on('stateChange', function(state){
 noble.on('discover', function(q) {
 	if (_.contains(q.advertisement.serviceUuids, serviceUUID)) {
 		console.log("found bean:" + q.advertisement.localName + " - UUID: " + q.uuid);
-		noble.stopScanning();
+		
 		//beanMap[q.advertisement.localName] = q.advertisement;
 		//console.log("!discover", beanMap);
 		//console.log(beanMap.length);
