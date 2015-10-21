@@ -12,7 +12,8 @@ var net = require('net');
 ---|---------------------------------*/
 
 var exitHandlerBound = false;
-var beanMap = {};
+var allowDuplicates = false; // https://github.com/sandeepmistry/noble/issues/65
+//var beanMap = {};
 
 /* | Bean Specific Service UUID
 ---|---------------------------------*/
@@ -40,8 +41,7 @@ var client = new net.Socket();
 
 noble.on('stateChange', function(state){
 	if (state === 'poweredOn'){
-		//noble.startScanning();
-		noble.startScanning([serviceUUID], false);
+		noble.startScanning([serviceUUID], allowDuplicates);
 		console.log("BLE enabled, scanning started");
 	} else {
 		noble.stopScanning();
@@ -50,29 +50,35 @@ noble.on('stateChange', function(state){
 });
 
 
+
+
 /* | DISCOVER BEAN AND CONNECT 
 ---|---------------------------------*/
 
 // got rid of the bind
+// got rid of beanmap...still works.
+// ISSUE: getting multiples? Doesn't matter if duplicates is set to true or false. Hmm.
 
 noble.on('discover', function(q) {
 	if (_.contains(q.advertisement.serviceUuids, serviceUUID)) {
 		console.log("found bean:" + q.advertisement.localName + " - UUID: " + q.uuid);
-		beanMap[q.advertisement.localName] = q.advertisement;
-		console.log("!discover", beanMap); 
+		noble.stopScanning();
+		//beanMap[q.advertisement.localName] = q.advertisement;
+		//console.log("!discover", beanMap);
+		//console.log(beanMap.length);
 
     	q.connect(function(err) {
     		if (err) throw err;
-    		var thisBean = q;
-			var beanName = thisBean.advertisement.localName;
+    		//var thisBean = q;
+			var beanName = q.advertisement.localName;
 			console.log("!connect", beanName);
-
-			thisBean.on('disconnect', function(){
-				console.log(thisBean.advertisement.localName + " disconnected, trying to find it...");
-				noble.startScanning();
-			});
-			setupServices(beanName, thisBean);
+			setupServices(beanName, q);
     	});
+
+    	q.on('disconnect', function(){
+				console.log(q.advertisement.localName + " disconnected, trying to find it...");
+				noble.startScanning([serviceUUID],allowDuplicates);
+			});
 
 	}else {
 		console.log("not a bean");
@@ -97,7 +103,7 @@ var setupServices = function(beanName, thisBean) {
 					console.log("!service.discovered ", beanName + " serial services");
 					// send that to read and write
 					readFromBean(beanName, characteristics[0]); // name, serial transport
-                    beanMap[beanName].characteristics = characteristics;
+                    //beanMap[beanName].characteristics = characteristics;
 				});
 			}
 
@@ -111,7 +117,7 @@ var setupServices = function(beanName, thisBean) {
 ---|---------------------------------*/
 
 var readFromBean = function(beanName, serialTransport) {
-	console.log("!readFromBean", beanName, serialTransport);
+	console.log("!readFromBean", beanName);
 
 	serialTransport.on('read', function(data, isNotification) {
 			
@@ -122,8 +128,6 @@ var readFromBean = function(beanName, serialTransport) {
 			// send it along to the server
 			//console.log(trimmed + "\n");
 			client.write(trimmed + "\n");
-			
-			
 		});
 
 		serialTransport.notify(true, function(err) {
