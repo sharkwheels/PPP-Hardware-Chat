@@ -23,7 +23,6 @@ var beanTransportChar = 'A495FF11C5B14B44B5121370F02D74DE'
 
 // var sceptreUUID = a78be07269c24e26b6242ea9a3e97535;
 // var chainsawUUID = c111d0df236440b0aff54d5b4ab7bfde;
-//var specificBeans = ["Sceptre", "Chainsaw", "Xmas", "Bean"];
 
 
 /* | CHAT SERVER CONNECTION VARIABLES
@@ -49,9 +48,6 @@ noble.on('stateChange', function(state){
 		console.log("BLE is off, scanning stopped");
 	}
 });
-
-
-
 
 /* | DISCOVER BEAN AND CONNECT 
 ---|---------------------------------*/
