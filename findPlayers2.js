@@ -4,7 +4,7 @@
 ---|---------------------------------*/
 
 var noble = require('noble');  // drives the BLE process
-var _     = require('lodash'); // ??
+var _     = require('lodash'); 
 var util  = require('util'); // needed for socker support
 var net = require('net');
 
@@ -13,18 +13,15 @@ var net = require('net');
 
 var exitHandlerBound = false;
 var allowDuplicates = false; // https://github.com/sandeepmistry/noble/issues/65
-//var beanMap = {};
 
 /* | Bean Specific Service UUID
 ---|---------------------------------*/
 
-var serviceUUID = 'a495ff10c5b14b44b5121370f02d74de';  // primary service UUID, holds
+var serviceUUID = 'a495ff10c5b14b44b5121370f02d74de';  // primary service UUID on all beans
 var beanTransportChar = 'A495FF11C5B14B44B5121370F02D74DE'
 
 // var sceptreUUID = a78be07269c24e26b6242ea9a3e97535;
 // var chainsawUUID = c111d0df236440b0aff54d5b4ab7bfde;
-//var specificBeans = ["Sceptre", "Chainsaw", "Xmas", "Bean"];
-
 
 /* | CHAT SERVER CONNECTION VARIABLES
 ---|------------------------------------*/
@@ -99,7 +96,7 @@ var setupServices = function(beanName, thisBean) {
 	thisBean.discoverServices(null, function(err, services) {
 		services.forEach(function(service){
 			// find the UUID for the serial service. Bean Transport: a495ff11c5b14b44b5121370f02d74de  A495FF11C5B14B44B5121370F02D74DE
-			// set thtat up
+			// set that up
 			if (service.uuid === serviceUUID) {
 				console.log("found bean services");
 				var characteristicUUIDs =[beanTransportChar];
@@ -108,7 +105,6 @@ var setupServices = function(beanName, thisBean) {
 					console.log("!service.discovered ", beanName + " serial services");
 					// send that to read and write
 					readFromBean(beanName, characteristics[0]); // name, serial transport
-                    //beanMap[beanName].characteristics = characteristics;
 				});
 			}
 
@@ -129,9 +125,7 @@ var readFromBean = function(beanName, serialTransport) {
 			var burp = data; // get that data and shuffle it over 8 bits. [1]<<8 || (data[0])
 			var value = burp.toString('utf8'); // make it a string ut8f
 			var trimmed = value.trim();
-
 			// send it along to the server
-			//console.log(trimmed + "\n");
 			client.write(trimmed + "\n");
 		});
 
