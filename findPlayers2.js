@@ -21,8 +21,9 @@ var allowDuplicates = false; // https://github.com/sandeepmistry/noble/issues/65
 var serviceUUID = 'a495ff10c5b14b44b5121370f02d74de';  // primary service UUID, holds
 var beanTransportChar = 'A495FF11C5B14B44B5121370F02D74DE'
 
-// Sceptre UUID: a78be07269c24e26b6242ea9a3e97535
-// Chainsaw UUID: c111d0df236440b0aff54d5b4ab7bfde
+// var sceptreUUID = a78be07269c24e26b6242ea9a3e97535;
+// var chainsawUUID = c111d0df236440b0aff54d5b4ab7bfde;
+//var specificBeans = ["Sceptre", "Chainsaw", "Xmas", "Bean"];
 
 
 /* | CHAT SERVER CONNECTION VARIABLES
@@ -57,34 +58,39 @@ noble.on('stateChange', function(state){
 
 // got rid of the bind
 // got rid of beanmap...still works.
-// ISSUE: getting multiples? Doesn't matter if duplicates is set to true or false. Hmm.
+// moved serviceUUID filter for beans to scan instead of here
+
 
 noble.on('discover', function(q) {
-	if (_.contains(q.advertisement.serviceUuids, serviceUUID)) {
-		console.log("found bean:" + q.advertisement.localName + " - UUID: " + q.uuid);
-		
-		//beanMap[q.advertisement.localName] = q.advertisement;
-		//console.log("!discover", beanMap);
-		//console.log(beanMap.length);
+	console.log("found bean:" + q.advertisement.localName + " - UUID: " + q.uuid);
+	
+	var beanName = q.advertisement.localName;
+	var beanUUID = q.uuid;
+
+	if (_.contains(['Chainsaw','Sceptre'], beanName)) {
+    	console.log("!contains",beanName);
 
     	q.connect(function(err) {
     		if (err) throw err;
-    		//var thisBean = q;
-			var beanName = q.advertisement.localName;
 			console.log("!connect", beanName);
 			setupServices(beanName, q);
-    	});
 
-    	q.on('disconnect', function(){
+			// ISSUE: getting multiples on discconect? Doesn't matter if duplicates is set to true or false. Hmm.
+			// ie: if the bean's disconnected 4 previous times, I get for console logs on disconnect. Weird?
+
+			q.on('disconnect', function(){
 				console.log(q.advertisement.localName + " disconnected, trying to find it...");
 				noble.startScanning([serviceUUID],allowDuplicates);
 			});
+    	});
 
-	}else {
-		console.log("not a bean");
+	}else{
+		console.log("not the bean you want");
 	}
-  
+
 });
+
+
 
 /* | SETUP SERIAL SERVICE
 ---|---------------------------------*/
