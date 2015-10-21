@@ -23,6 +23,7 @@ var beanTransportChar = 'A495FF11C5B14B44B5121370F02D74DE'
 
 // var sceptreUUID = a78be07269c24e26b6242ea9a3e97535;
 // var chainsawUUID = c111d0df236440b0aff54d5b4ab7bfde;
+//var specificBeans = ["Sceptre", "Chainsaw", "Xmas", "Bean"];
 
 
 /* | CHAT SERVER CONNECTION VARIABLES
@@ -49,6 +50,9 @@ noble.on('stateChange', function(state){
 	}
 });
 
+
+
+
 /* | DISCOVER BEAN AND CONNECT 
 ---|---------------------------------*/
 
@@ -71,10 +75,9 @@ noble.on('discover', function(q) {
 			console.log("!connect", beanName);
 			setupServices(beanName, q);
 
-			// ISSUE: getting multiples on discconect? Doesn't matter if duplicates is set to true or false. Hmm.
-			// ie: if the bean's disconnected 4 previous times, I get for console logs on disconnect. Weird?
+			// https://github.com/sandeepmistry/noble/issues/77  <-- trying once instead of on.
 
-			q.on('disconnect', function(){
+			q.once('disconnect', function(){
 				console.log(q.advertisement.localName + " disconnected, trying to find it...");
 				noble.startScanning([serviceUUID],allowDuplicates);
 			});
