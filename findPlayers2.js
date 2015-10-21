@@ -120,8 +120,8 @@ var readFromBean = function(beanName, serialTransport) {
 			var trimmed = value.trim();
 
 			// send it along to the server
-			console.log(trimmed + "\n");
-			//client.write(trimmed + "\n");
+			//console.log(trimmed + "\n");
+			client.write(trimmed + "\n");
 			
 			
 		});
